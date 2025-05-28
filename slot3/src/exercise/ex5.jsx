@@ -11,11 +11,14 @@ const employees = [
 const Ex5 = () => {
   return (
     <div>
-      <h2>Exercise 5: Employee Dropdown Menu</h2>
+      <h2>
+        ----------------------------Exercise 5: Employee Dropdown
+        Menu----------------------------
+      </h2>
       <select>
-        <option value="" disabled selected>
-          Select an employee
-        </option>
+        {" "}
+        {/*Thẻ HTML để tạo dropdown menu*/}
+        <option value="">Select an employee </option>
         {employees.map((employee, index) => (
           <option key={employee.id || index} value={employee.name}>
             {employee.name}

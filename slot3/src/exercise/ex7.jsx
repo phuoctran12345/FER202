@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 const Ex7 = () => {
   const employees = [
@@ -20,7 +20,7 @@ const Ex7 = () => {
   });
 
   return (
-    <div>
+    <Fragment>
       <h2>Exercise 7: Employees Sorted by Department and Name</h2>
       {sortedEmployees.length === 0 ? (
         <p>No employees to display</p>
@@ -33,7 +33,7 @@ const Ex7 = () => {
           ))}
         </ul>
       )}
-    </div>
+    </Fragment>
   );
 };
 

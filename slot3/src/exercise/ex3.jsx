@@ -15,6 +15,7 @@ const Ex3 = () => {
         ----------------------------Exercise 3: Employee
         Table----------------------------
       </h2>
+      <h2>Second Employee: {employees[1].name} - {employees[1].department} - {employees[1].age}</h2>
       <table>
         <thead>
           {" "}
@@ -28,15 +29,16 @@ const Ex3 = () => {
         <tbody>
           {" "}
           {/* Hàng chứa data*/}
-          {employees.map((employee, index) => (
-            <tr key={employee.id || index}>
-              <td>{employee.id || index + 1}</td>
+          {employees.map((employee, i) => (
+            <tr key={employee.id || i}>
+              <td>{employee.id || i + 1}</td>
               <td>{employee.name}</td>
               <td>{employee.department}</td>
             </tr>
           ))}
         </tbody>
       </table>
+      {/* <h2>thong tin hien thi cua h2: {employees[1]}</h2> */}
     </div>
   );
 };

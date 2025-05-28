@@ -8,6 +8,7 @@ const Ex10 = () => {
     { name: "Ann", department: "Finance", age: 22 },
     { name: "Elisabeth", department: "HR", age: 16 },
   ];
+
   const [searchTerm, setSearchTerm] = useState("");
 
   if (!employees || !Array.isArray(employees)) {
@@ -33,7 +34,8 @@ const Ex10 = () => {
         <ul>
           {filteredEmployees.map((employee, index) => (
             <li key={employee.id || index}>
-              {employee.name} - {employee.department} (Age: {employee.age})
+              {employee.id ? employee.id : "Null"} - {employee.name} -{" "}
+              {employee.department} (Age: {employee.age})
             </li>
           ))}
         </ul>

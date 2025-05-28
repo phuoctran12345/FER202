@@ -10,7 +10,7 @@ const employees = [
 
 const averageAge = (ages) => {
   if (ages.length === 0) return 0;
-  const sum = ages.reduce((total, age) => total + age, 0);
+  const sum = ages.reduce((total, age) => total + age, 0); // hàm tích luỹ (Accumulator)
   return sum / ages.length;
 };
 
