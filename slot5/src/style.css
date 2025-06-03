@@ -1,0 +1,18 @@
+.bg-light-gray {
+    background-color: #e9ecef;
+}
+.bg-footer {
+    background-color: #d3c7b5;
+}
+.grid-col {
+    background-color: #ced4da;
+    border: 1px solid #adb5bd;
+    padding: 10px;
+    min-height: 50px;
+    text-align: left;
+}
+.footer-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #343a40;
+}
