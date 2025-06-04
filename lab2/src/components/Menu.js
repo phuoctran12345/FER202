@@ -45,8 +45,10 @@ const Menu = () => (
                     borderBottomLeftRadius: 0
                   }}>{pizza.tag}</span>
               )}
+              
               <img src={pizza.img} className="card-img-top"  alt={pizza.name}
                    style={{height: '61%', objectFit: 'cover'}}/>
+
               <div className="card-body">
                 <h5 className="card-title">{pizza.name}</h5>
                 <p className="card-text">

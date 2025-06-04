@@ -5,9 +5,10 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 const Header = () => (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
-            <a className="navbar-brand" style={{ paddingLeft: '120px' }} href="#">Pizza House</a>
+            <a className="navbar-brand" style={{paddingLeft: '120px'}} href="#">Pizza House</a>
 
-            <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
 
@@ -24,10 +25,10 @@ const Header = () => (
                         <a className="nav-link" href="#">Contact</a>
                     </li>
                 </ul>
-                <form className="d-flex" style={{ paddingRight: '120px' }} role="search">
-                    <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                    <button className="btn btn-danger" style={{ paddingRight: '22px' }}  type="submit">
-                        <FontAwesomeIcon icon={faSearch} />
+                <form className="d-flex" style={{paddingRight: '120px'}} role="search">
+                    <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                    <button className="btn btn-danger" style={{paddingRight: '22px'}} type="submit">
+                        <FontAwesomeIcon icon={faSearch}/>
                     </button>
                 </form>
             </div>

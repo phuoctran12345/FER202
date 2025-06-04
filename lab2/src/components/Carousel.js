@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Carousel = () => (
-  <div id="pizzaCarousel" className="carousel slide" data-bs-ride="carousel">
+  <div id="pizzaCarousel"  data-bs-ride="carousel">
     <div className="carousel-inner">
         <div className="carousel-item active">
             <img src="/images/pizza1.png" className="d-block w-100" alt="Pizza"  style={{maxHeight: '450px', objectFit: 'cover'}}/>
