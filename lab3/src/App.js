@@ -1,16 +1,18 @@
-import './App.css';
-import Header from './components/Header';
-import Carousel from './components/Carousel';
-import Menu from './components/Menu';
-import BookTable from './components/BookTable';
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import All from './All';
+import BookTable     from "./components/BookTable";
+import Carousel from "./components/Carousel";
+import Menu from "./components/Menu";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <div style={{background: '#333', minHeight: '100vh'}}>
-      <Header />
-      <Carousel />
-      <Menu />
-      <BookTable />
+    <div className="App" style={{ backgroundColor: '#212529', minHeight: '100vh' }}>
+        <Header />
+        <Carousel />
+        <Menu />
+        <BookTable />
     </div>
   );
 }
