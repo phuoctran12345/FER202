@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Tạo hoặc cập nhật .gitignore
+echo ".idea/" >> .gitignore
+echo ".DS_Store" >> .gitignore
+echo "*.iml" >> .gitignore
