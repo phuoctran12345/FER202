@@ -15,6 +15,7 @@ const CheckoutPage = () => {
   const navigate = useNavigate()
   const cartItems = useSelector((state) => state.cart.items)
   const currentUser = useSelector((state) => state.users.currentUser) // Assuming you have a currentUser in userSlice
+  const products = useSelector((state) => state.products.products)
 
   const [paymentMethod, setPaymentMethod] = useState("card")
   const [shippingAddress, setShippingAddress] = useState({
@@ -25,8 +26,6 @@ const CheckoutPage = () => {
     country: "",
   })
   const [agreedToTerms, setAgreedToTerms] = useState(false)
-  const [payosQR, setPayosQR] = useState(null)
-  const [payosLoading, setPayosLoading] = useState(false)
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: 'success' })
 
   const handleInputChange = (e) => {
@@ -38,44 +37,7 @@ const CheckoutPage = () => {
   const shipping = cartItems.length > 0 ? 5.0 : 0
   const total = subtotal + shipping
 
-  const handleCreatePayOSBill = async () => {
-    setPayosLoading(true)
-    setPayosQR(null)
-    try {
-      const response = await axios.post(
-        "https://api-merchant.payos.vn/v2/payment-requests",
-        {
-          orderCode: Date.now(), // số nguyên, không trùng
-          amount: Math.round(total), // số nguyên
-          description: "Thanh toan don hang E-commerce App", // chuỗi ngắn, không ký tự lạ
-          returnUrl: "http://localhost:3005/orders",
-          cancelUrl: "http://localhost:3005/checkout",
-        },
-        {
-          headers: {
-            "x-client-id": "251dd680-34fd-4d28-bce8-f892436ac0ce",
-            "x-api-key": "167ea960-f8e3-4971-afc2-23333762a000",
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      setPayosQR(response.data.data.qrCode)
-    } catch (err) {
-      setPayosQR(null)
-      setShowAlert({ show: true, message: 'Tạo bill PayOS thất bại!', variant: 'danger' })
-    }
-    setPayosLoading(false)
-  }
-
-  // Gọi tạo bill PayOS mỗi khi chọn VietQR và tổng tiền thay đổi
-  useEffect(() => {
-    if (paymentMethod === "vietqr") {
-      handleCreatePayOSBill()
-    } else {
-      setPayosQR(null)
-    }
-    // eslint-disable-next-line
-  }, [paymentMethod, total])
+  // Xóa toàn bộ state, hàm, useEffect liên quan payosQR, payosLoading, handleCreatePayOSBill
 
   const handlePlaceOrder = async () => {
     if (!agreedToTerms) {
@@ -88,11 +50,20 @@ const CheckoutPage = () => {
       return
     }
 
+    // Kiểm tra tồn kho trước khi đặt hàng
+    for (const item of cartItems) {
+      const product = products.find(p => p.id === item.id)
+      if (!product || typeof product.stock !== 'number' || product.stock < item.quantity) {
+        setShowAlert({ show: true, message: `Sản phẩm '${item.name}' không đủ hàng!`, variant: 'danger' })
+        return
+      }
+    }
+
     const orderData = {
       userId: currentUser.id,
       orderDate: new Date().toISOString(),
       totalAmount: total,
-      status: "pending", // Initial status
+      status: "success", // Đặt trạng thái thành 'success' ngay khi thanh toán
       shippingAddress,
       paymentMethod,
       items: cartItems.map((item) => ({
@@ -105,9 +76,13 @@ const CheckoutPage = () => {
 
     try {
       await dispatch(createOrder(orderData)).unwrap()
-      // Giảm stock sản phẩm
+      // Giảm stock sản phẩm dựa trên stock thực tế
       for (const item of cartItems) {
-        await dispatch(updateProduct({ id: item.id, product: { stock: item.stock - item.quantity } }))
+        const product = products.find(p => p.id === item.id)
+        if (product && typeof product.stock === 'number') {
+          const updatedProduct = { ...product, stock: product.stock - item.quantity }
+          await dispatch(updateProduct({ id: item.id, product: updatedProduct }))
+        }
       }
       dispatch(clearCart())
       setShowAlert({ show: true, message: 'Order placed successfully!', variant: 'success' })
@@ -225,46 +200,6 @@ const CheckoutPage = () => {
                   />
                   Tiền mặt (Thanh toán khi nhận hàng)
                 </label>
-
-                
-                <label className="radio-group-item">
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="vietqr"
-                    checked={paymentMethod === "vietqr"}
-                    onChange={() => setPaymentMethod("vietqr")}
-                  />
-                  Chuyển khoản (PayOS QR)
-                </label>
-                {paymentMethod === "vietqr" && (
-                  <div style={{ display: "grid", gap: "1rem", paddingLeft: "1.5rem", textAlign: "center" }}>
-                    <p style={{ color: "#6c757d" }}>Quét mã QR bên dưới để chuyển khoản qua PayOS.</p>
-                    <div className="flex-center">
-                      {payosLoading ? (
-                        <div>Đang tạo bill PayOS...</div>
-                      ) : payosQR ? (
-                        <img
-                          src={payosQR}
-                          alt="PayOS QR Code"
-                          width={220}
-                          height={220}
-                          style={{ borderRadius: "0.5rem", border: "1px solid #eee", padding: "0.5rem" }}
-                        />
-                      ) : (
-                        <div style={{ color: "red" }}>Không tạo được QR. Vui lòng thử lại!</div>
-                      )}
-                    </div>
-                    <p style={{ fontSize: "0.95rem", color: "#333" }}>
-                      Ngân hàng: MB Bank<br />
-                      Chủ tài khoản: Ronaldo Cristiano<br />
-                      Số tài khoản: 5529062004
-                    </p>
-                    <p style={{ fontSize: "0.875rem", color: "red" }}>
-                      *Lưu ý: Mã QR chỉ có hiệu lực cho đơn hàng này. Vui lòng chuyển khoản đúng số tiền!
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
           </div>

@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom"
 
 const RecentOrdersTable = ({ orders }) => {
+  // Lấy 5 order mới nhất (theo ngày lớn nhất)
+  const recentOrders = orders.length > 0 ? [...orders].sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)).slice(0, 5) : [];
   return (
     <div className="card">
       <div className="card-header">
         <h2 className="card-title">Recent Orders</h2>
       </div>
       <div className="card-content" style={{ padding: 0 }}>
-        {orders.length === 0 ? (
+        {recentOrders.length === 0 ? (
           <p className="text-muted-foreground text-center p-4">No recent orders.</p>
         ) : (
           <table className="table">
@@ -22,7 +24,7 @@ const RecentOrdersTable = ({ orders }) => {
               </tr>
             </thead>
             <tbody className="table-body">
-              {orders.map((order) => (
+              {recentOrders.map((order) => (
                 <tr key={order.id}>
                   <td>{order.id}</td>
                   <td>{order.userId}</td>

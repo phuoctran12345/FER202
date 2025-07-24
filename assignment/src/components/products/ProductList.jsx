@@ -16,7 +16,9 @@ const ProductCard = ({ product }) => {
       <Card.Img variant="top" src={product.imageUrl || "/placeholder.svg"} alt={product.name} style={{ height: "12rem", objectFit: "cover" }} />
       <Card.Body className="d-flex flex-column">
         <Card.Title>{product.name}</Card.Title>
-        <Card.Text style={{ color: "#6c757d" }}>{product.description.substring(0, 70)}...</Card.Text>
+        <Card.Text style={{ color: "#6c757d" }}>
+          {product.description ? product.description.substring(0, 70) + "..." : "Không có mô tả"}
+        </Card.Text>
         <div className="mt-auto d-flex justify-content-between align-items-center">
           <span style={{ fontSize: "1.25rem", fontWeight: "bold" }}>{product.price.toLocaleString('vi-VN')}₫</span>
           <Button

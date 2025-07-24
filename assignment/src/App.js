@@ -41,6 +41,7 @@ function App() {
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/orders" element={<OrderHistory />} />
+          <Route path="/orders/:id" element={<OrderDetail />} />
           <Route path="/admin/orders" element={
             <RequireAdmin><OrderList /></RequireAdmin>
           } />

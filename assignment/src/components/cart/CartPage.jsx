@@ -120,10 +120,12 @@ const CartPage = () => {
                 <span>{shipping.toLocaleString('vi-VN')}₫</span>
               </div>
               <div className="separator my-2"></div>
+
               <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold" }}>
                 <span>Total</span>
                 <span>{total.toLocaleString('vi-VN')}₫</span>
               </div>
+              
             </div>
             <div className="card-footer">
               <Link

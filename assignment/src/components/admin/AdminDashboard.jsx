@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { fetchAllUsers } from "../../redux/slices/userSlice"
 import { fetchProducts, createProduct, updateProduct, deleteProduct } from "../../redux/slices/productSlice"
 import { fetchAllOrders } from "../../redux/slices/orderSlice"
-import { fetchAllPaymentHistory } from "../../redux/slices/paymentSlice"
 import DashboardCard from "./DashboardCard"
 import RecentOrdersTable from "./RecentOrdersTable"
 import { Users, Package, ShoppingCart, DollarSign } from "lucide-react"
@@ -20,10 +19,9 @@ const AdminDashboard = () => {
   const { users, status: usersStatus, error: usersError } = useSelector((state) => state.users)
   const { products, status: productsStatus, error: productsError } = useSelector((state) => state.products)
   const { orders, status: ordersStatus, error: ordersError } = useSelector((state) => state.orders)
-  const { paymentHistory, status: paymentsStatus, error: paymentsError } = useSelector((state) => state.payments)
-
   const [showProductForm, setShowProductForm] = useState(false)
   const [editProduct, setEditProduct] = useState(null)
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -32,32 +30,28 @@ const AdminDashboard = () => {
     category: "",
     stock: "",
   })
+
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: 'success' })
   const [showConfirm, setShowConfirm] = useState({ show: false, productId: null })
 
   useEffect(() => {
-    if (currentUser?.role === "admin" || currentUser?.role === "manager") {
+    if (currentUser?.role === "admin" ) {
       dispatch(fetchAllUsers())
       dispatch(fetchProducts())
       dispatch(fetchAllOrders())
-      dispatch(fetchAllPaymentHistory())
     }
   }, [currentUser, dispatch])
 
   if (!currentUser || (currentUser.role !== "admin" && currentUser.role !== "manager")) {
     return (
       <div className="container py-8 text-center" style={{ color: "red" }}>
-        Access Denied. You must be an Admin or Manager to view this page.
+         You are not a Manager 
       </div>
     )
   }
 
-  const isLoading =
-    usersStatus === "loading" ||
-    productsStatus === "loading" ||
-    ordersStatus === "loading" ||
-    paymentsStatus === "loading"
-  const hasError = usersError || productsError || ordersError || paymentsError
+  const isLoading = usersStatus === "loading" || productsStatus === "loading" || ordersStatus === "loading"
+  const hasError = usersError || productsError || ordersError
 
   if (isLoading) {
     return <div className="container py-8 text-center">Loading dashboard data...</div>
@@ -282,9 +276,6 @@ const AdminDashboard = () => {
               </Link>
               <Link to="/admin/orders" className="button button-outline ">
                 View All Orders
-              </Link>
-              <Link to="/admin/payments" className="button button-outline ">
-                View Payment History
               </Link>
             </div>
           </div>
